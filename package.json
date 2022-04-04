@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
+    "reset database": "docker stop demo-app-db && docker rm demo-app-db && docker build -t demo-app-db ./mysql && docker run --name demo-app-db -p 3306:3306 -d demo-app-db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/pentest-tool-comparison/demo-app#readme",
   "dependencies": {
     "express": "^4.17.3",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.15"
   }
 }
