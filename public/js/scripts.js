@@ -1,31 +1,21 @@
 const itemsDiv = document.getElementById('items');
 const cartItemsDiv = document.getElementById('cart-items');
+const searchInput = document.getElementById('searchInput');
+const searchTextHeader = document.getElementById('searchTextHeader');
+const searchTextElement = document.getElementById('searchText');
 
-async function login(username, password) {
-    const userdata = await getUsers();
 
-    if(userdata.find(value => value.username === username) == null){
-        alert("User does not exist");
-        return
-    }
-
-    if(userdata.find(value => value.username === username && value.password === password) == null){
-        alert("Password is wrong");
-        return
-    }
-
-}
 
 function getUsers() {
-    return get('/api/users');
+    return rest('GET', '/api/users');
 }
 
-function get(url) {
+function rest(method, url, body = null) {
     return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest();
-        request.open('GET', url);
+        request.open(method, url);
         request.setRequestHeader("Content-Type", "application/json");
-        request.send();
+        request.send(JSON.stringify(body));
         request.addEventListener('load', () => {
             if(request.readyState === 4 && request.status === 200){
                 resolve(JSON.parse(request.responseText))
@@ -41,9 +31,22 @@ main().then()
 
 async function main() {
     if(itemsDiv != null){
-        const items = await get('/api/items')
-        items.forEach(v => {
-            addItem(v.name, v.price, v.imgurl)
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchText = urlParams.get('search');
+
+        searchInput.value = searchText;
+        searchTextElement.innerHTML = searchText;
+        searchTextHeader.style.display = searchText == null || searchText.length === 0 ? 'none' : 'block';
+
+        const searchData = {
+            search: searchText
+        }
+
+
+        const items = searchText == null || searchText.length === 0 ? await rest('GET', '/api/items') : await rest('POST', '/api/items/search', searchData);
+
+        items.forEach(item => {
+            addItem(item.name, item.price, item.imgurl, item.item_id)
         })
     }
 
@@ -54,6 +57,7 @@ async function main() {
             addCartItem(i+1, v.name, v.price, v.quantity)
         })
     }
+
 }
 
 function addCartItem(idx, name, price, quantity) {
@@ -79,7 +83,7 @@ function addCartItem(idx, name, price, quantity) {
     cartItemsDiv.append(row)
 }
 
-function addItem(name, price, imgurl) {
+function addItem(name, price, imgurl, id) {
     const colDiv = document.createElement('DIV');
     colDiv.classList = "col mb-5";
 
@@ -111,7 +115,8 @@ function addItem(name, price, imgurl) {
 
     const cartButton = document.createElement('A')
     cartButton.classList = "btn btn-outline-dark mt-auto";
-    cartButton.innerText = "Add to cart"
+    cartButton.innerText = "Show Details";
+    cartButton.onclick = () => window.location.href = `details.html?id=${id}`;
 
 
 
@@ -126,4 +131,8 @@ function addItem(name, price, imgurl) {
     cardDiv.append(cardFooter);
     colDiv.append(cardDiv);
     itemsDiv.append(colDiv);
+}
+
+function doSearch() {
+    window.location.href = `index.html?search=${searchInput.value}`;
 }

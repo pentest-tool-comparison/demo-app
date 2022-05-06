@@ -2,6 +2,10 @@
 
 
 ## Included vulnerabilities
-- Storage of plaintext password
-- Client side password-check
-- Too much information when logging in with invalid credentials
+- SQL Injection (done)
+- XSS Reflected (done)
+- XSS Stored (done)
+- Suche mit XSS und SQL-Injection (done)
+- Username enumeration -> user login -> überprüfung ob username existiert (done)
+- Password hash files encryption (done)
+- Upload evtl. path traversal (done)

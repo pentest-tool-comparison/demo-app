@@ -20,6 +20,8 @@
   "homepage": "https://github.com/pentest-tool-comparison/demo-app#readme",
   "dependencies": {
     "express": "^4.17.3",
+    "md5": "^2.3.0",
+    "multer": "^1.4.4",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15"
   }

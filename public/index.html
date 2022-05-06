@@ -27,11 +27,21 @@
                     <h1 class="display-4 fw-bolder">Shop in style</h1>
                     <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
                 </div>
+                <br>
+                <div class="input-group mb-3 w-25 mx-auto ">
+                    <input type="text" class="form-control" placeholder="Product name" aria-label="Recipient's username" id="searchInput" aria-describedby="basic-addon2">
+                    <br>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" onclick="doSearch()">Search</button>
+                    </div>
+                </div>
             </div>
         </header>
         <!-- Section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
+                <h3 id="searchTextHeader">Search for "<span id="searchText"></span>":</h3>
+
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="items">
                 </div>
             </div>

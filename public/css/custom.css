@@ -3,3 +3,18 @@
     height: 180px;
     object-fit: cover;
 }
+
+.details-img{
+    float: right;
+    width: 450px;
+    height: 180px;
+    object-fit: cover;
+}
+
+#title{
+    clear: both;
+}
+
+.card{
+    margin-bottom: 10px;
+}
