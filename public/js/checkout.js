@@ -1,16 +1,5 @@
-const usernameInput = document.getElementById('usernameInput');
-const passwordInput = document.getElementById('passwordInput');
-
-async function login(should_be_admin) {
-    const data = {
-        username: usernameInput.value,
-        password: passwordInput.value,
-        should_be_admin: should_be_admin
-    };
-
-    const response = await rest('POST', '/api/user/login', data)
-    alert(response.message);
-}
+const titleElement = document.getElementById('title');
+const priceElement = document.getElementById('price');
 
 function rest(method, url, body = null) {
     return new Promise((resolve, reject) => {
@@ -21,10 +10,20 @@ function rest(method, url, body = null) {
         request.addEventListener('load', () => {
             if(request.readyState === 4 && request.status === 200){
                 resolve(JSON.parse(request.responseText))
+            }else{
+                window.location.replace('index.html')
             }
         });
         request.addEventListener('error', () => {
             reject(request.responseText)
         })
     })
+}
+
+main().then()
+
+async function main(){
+    const response = await rest('GET', '/api/checkout')
+    titleElement.innerText = response.name;
+    priceElement.innerText = `Total price: ${response.price.toFixed(2)} €`;
 }

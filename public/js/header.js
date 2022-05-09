@@ -10,10 +10,9 @@ document.write(
     '                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">\n' +
     '                    </ul>\n' +
     '                    <form class="d-flex">\n' +
-    '                        <button class="btn btn-outline-dark" type="button" onclick="location.href=\'cart.html\'">\n' +
-    '                            <i class="bi-cart-fill me-1"></i>\n' +
-    '                            Cart\n' +
-    '                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>\n' +
+    '                        <button class="btn btn-outline-dark" type="button" onclick="location.href=\'login.html\'">\n' +
+    '                            <i class="bi-box-arrow-in-right me-1"></i>\n' +
+    '                            Login\n' +
     '                        </button>\n' +
     '                    </form>\n' +
     '                </div>\n' +

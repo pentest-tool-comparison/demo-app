@@ -4,12 +4,6 @@ const searchInput = document.getElementById('searchInput');
 const searchTextHeader = document.getElementById('searchTextHeader');
 const searchTextElement = document.getElementById('searchText');
 
-
-
-function getUsers() {
-    return rest('GET', '/api/users');
-}
-
 function rest(method, url, body = null) {
     return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest();
@@ -83,6 +77,15 @@ function addCartItem(idx, name, price, quantity) {
     cartItemsDiv.append(row)
 }
 
+async function buy(name, price) {
+    const data = {
+        name: name,
+        price: price
+    }
+    const response = await rest('POST', '/api/checkout', data);
+    window.location.href = response.redirect;
+}
+
 function addItem(name, price, imgurl, id) {
     const colDiv = document.createElement('DIV');
     colDiv.classList = "col mb-5";
@@ -118,6 +121,11 @@ function addItem(name, price, imgurl, id) {
     cartButton.innerText = "Show Details";
     cartButton.onclick = () => window.location.href = `details.html?id=${id}`;
 
+    const buyButton = document.createElement('A')
+    buyButton.classList = "btn btn-primary mt-auto";
+    buyButton.innerText = "Buy";
+    buyButton.onclick = () => buy(name, price);
+
 
 
 
@@ -126,13 +134,11 @@ function addItem(name, price, imgurl, id) {
     cardBody.append(cardText);
     cardDiv.append(cardImg);
     cardDiv.append(cardBody)
+    footerText.append(buyButton);
+    footerText.append(" ")
     footerText.append(cartButton);
     cardFooter.append(footerText);
     cardDiv.append(cardFooter);
     colDiv.append(cardDiv);
     itemsDiv.append(colDiv);
-}
-
-function doSearch() {
-    window.location.href = `index.html?search=${searchInput.value}`;
 }

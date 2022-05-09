@@ -13,7 +13,11 @@ app.use(bodyParser.json({
     limit: '50mb'
 }));
 
-app.listen(port, () => console.log(`${process.env.npm_package_name} ${process.env.npm_package_version} running on http://localhost:${port}${backendPath}`));
+app.listen(port, () => {
+    console.log(`${process.env.npm_package_name} ${process.env.npm_package_version} running...`);
+    console.log(`Backend: http://localhost:${port}${backendPath}/`);
+    console.log(`Frontend: http://localhost:${port}/`);
+});
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -90,7 +94,28 @@ app.post(backendPath +'/user/login', async (req, res) => {
         return res.json({message: "Invalid credentials!"});
     }
 
+    if(users[0].is_admin && !req.body.should_be_admin){
+        return res.json({message: "Please use the admin form to log in!"});
+    }
+
+    if(!users[0].is_admin && req.body.should_be_admin){
+        return res.json({message: "Please use the user form to log in!"});
+    }
+
     res.json({message: "Login successful!"});
+});
+
+const sessionData = new Map();
+
+app.post(backendPath +'/checkout', async (req, res) => {
+    sessionData.set(req.sessionId, req.body)
+    res.json({redirect: "checkout.html"});
+});
+
+app.get(backendPath +'/checkout', async (req, res) => {
+    const data = sessionData.get(req.sessionId);
+    if(data != null) return res.json(data)
+    res.status(404).send();
 });
 
 
@@ -101,22 +126,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 async function query(sql) {
     return new Promise((resolve, reject) => {
         connection.query(sql, function (error, results) {
-            if (error) console.log(error);
+            if (error){
+                console.log(error);
+            }
 
             let c = 0;
             let queryOutputs = [];
 
-            for (const result of results) {
-                if(result.constructor.name === 'RowDataPacket'){
-                    c++;
+            try {
+                for (const result of results) {
+                    if(result.constructor.name === 'RowDataPacket'){
+                        c++;
+                    }
+                    if(result.constructor.name === 'Array'){
+                        queryOutputs.push(result);
+                    }
                 }
-                if(result.constructor.name === 'Array'){
-                    queryOutputs.push(result);
-                }
+            }catch (e) {
+                // Is not iterable
+                resolve(results);
             }
 
             if(c === results.length){
-                resolve(results)
+                resolve(results);
             }else{
                 resolve(queryOutputs[queryOutputs.length - 1])
             }

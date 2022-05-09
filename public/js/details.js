@@ -6,15 +6,19 @@ const imgElement = document.getElementById('img');
 const insertCommentTitle = document.getElementById('titleInput');
 const insertCommentBody = document.getElementById('bodyInput');
 
-function get(url) {
+let details;
+
+function rest(method, url, body = null) {
     return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest();
-        request.open('GET', url);
+        request.open(method, url);
         request.setRequestHeader("Content-Type", "application/json");
-        request.send();
+        request.send(JSON.stringify(body));
         request.addEventListener('load', () => {
             if(request.readyState === 4 && request.status === 200){
                 resolve(JSON.parse(request.responseText))
+            }else{
+                window.location.replace('index.html')
             }
         });
         request.addEventListener('error', () => {
@@ -23,22 +27,13 @@ function get(url) {
     })
 }
 
-function post(url, body) {
-
-    return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.open('POST', url);
-        request.setRequestHeader("Content-Type", "application/json");
-        request.send(JSON.stringify(body));
-        request.addEventListener('load', () => {
-            if(request.readyState === 4 && request.status === 200){
-                resolve(JSON.parse(request.responseText))
-            }
-        });
-        request.addEventListener('error', () => {
-            reject(request.responseText)
-        })
-    })
+async function buy() {
+    const data = {
+        name: details.name,
+        price: details.price
+    }
+    const response = await rest('POST', '/api/checkout', data);
+    window.location.href = response.redirect;
 }
 
 main().then()
@@ -51,8 +46,8 @@ async function main() {
         window.location.href = 'index.html'
     }
 
-    const details = await get(`/api/item/${itemId}`)
-    const comments = await get(`/api/item/${itemId}/comments`)
+    details = await rest('GET', `/api/item/${itemId}`)
+    const comments = await rest('GET', `/api/item/${itemId}/comments`)
 
     titleElement.innerText = details.name;
     priceElement.innerText = `${details.price.toFixed(2)} €`
@@ -110,7 +105,7 @@ async function submitComment() {
         body: insertCommentBody.value
     }
 
-    const res = await post(`/api/item/${urlParams.get('id')}/comment`, data);
+    const res = await rest('POST', `/api/item/${urlParams.get('id')}/comment`, data);
     window.location.reload();
 
 
