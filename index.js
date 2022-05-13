@@ -79,8 +79,8 @@ app.post(backendPath +'/upload', upload.any(), async (req, res) => {
 });
 
 app.post(backendPath +'/user/forgot-password', async (req, res) => {
-    const users = await query('SELECT * FROM userdata WHERE username="' + req.body.username + '";');
-    const msg = users.length === 0 ? 'The user does not exist' : 'The e-mail has been sent.'
+    const users = await query(`SELECT * FROM userdata WHERE username="${req.body.username}";`);
+    const msg = users.length === 0 ? 'This user does not exist!' : 'The e-mail has been sent!'
     res.json({message: msg});
 });
 
