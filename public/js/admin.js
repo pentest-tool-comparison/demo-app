@@ -8,7 +8,7 @@ async function login(should_be_admin) {
         should_be_admin: should_be_admin
     };
 
-    const response = await rest('POST', '/api/user/login', data)
+    const response = await rest('POST', 'api/user/login', data)
     alert(response.message);
 }
 

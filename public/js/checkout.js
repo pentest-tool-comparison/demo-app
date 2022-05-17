@@ -23,7 +23,7 @@ function rest(method, url, body = null) {
 main().then()
 
 async function main(){
-    const response = await rest('GET', '/api/checkout')
+    const response = await rest('GET', 'api/checkout')
     titleElement.innerText = response.name;
     priceElement.innerText = `Total price: ${response.price.toFixed(2)} €`;
 }

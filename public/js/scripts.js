@@ -37,7 +37,7 @@ async function main() {
         }
 
 
-        const items = searchText == null || searchText.length === 0 ? await rest('GET', '/api/items') : await rest('POST', '/api/items/search', searchData);
+        const items = searchText == null || searchText.length === 0 ? await rest('GET', 'api/items') : await rest('POST', 'api/items/search', searchData);
 
         items.forEach(item => {
             addItem(item.name, item.price, item.imgurl, item.item_id)
@@ -82,7 +82,7 @@ async function buy(name, price) {
         name: name,
         price: price
     }
-    const response = await rest('POST', '/api/checkout', data);
+    const response = await rest('POST', 'api/checkout', data);
     window.location.href = response.redirect;
 }
 

@@ -46,8 +46,8 @@ async function main() {
         window.location.href = 'index.html'
     }
 
-    details = await rest('GET', `/api/item/${itemId}`)
-    const comments = await rest('GET', `/api/item/${itemId}/comments`)
+    details = await rest('GET', `api/item/${itemId}`)
+    const comments = await rest('GET', `api/item/${itemId}/comments`)
 
     titleElement.innerText = details.name;
     priceElement.innerText = `${details.price.toFixed(2)} €`
@@ -105,7 +105,7 @@ async function submitComment() {
         body: insertCommentBody.value
     }
 
-    const res = await rest('POST', `/api/item/${urlParams.get('id')}/comment`, data);
+    const res = await rest('POST', `api/item/${urlParams.get('id')}/comment`, data);
     window.location.reload();
 
 

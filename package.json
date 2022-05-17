@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "reset database": "docker stop demo-app-db && docker rm demo-app-db && docker build -t demo-app-db ./mysql && docker run --name demo-app-db -p 3306:3306 -d demo-app-db",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
