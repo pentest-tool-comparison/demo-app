@@ -136,13 +136,18 @@ app.get(backendPath +'/checkout', async (req, res) => {
     res.status(404).send();
 });
 
+app.get(backendPath + '/xss_reflected', (req, res) => {
+    log(req);
+    res.send('<html><body>Hello ' + req.query.name + '!</body></html>')
+})
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 
 async function query(sql) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         connection.query(sql, function (error, results) {
             if (error){
                 console.log(error);
@@ -166,6 +171,9 @@ async function query(sql) {
                 resolve(results);
             }
 
+            if(results == null){
+                return reject(null);
+            }
             if(c === results.length){
                 resolve(results);
             }else{
