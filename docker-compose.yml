@@ -1,0 +1,16 @@
+version: '3'
+services:
+  demo-app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - demo-app-db
+  demo-app-db:
+    build: mysql/.
+    ports:
+      - "3306:3306"
+networks:
+  default:
+    external:
+      name: demo-app-net

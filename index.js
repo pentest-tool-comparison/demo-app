@@ -69,6 +69,7 @@ app.get(backendPath + '/items', async (req, res) => {
 app.get(backendPath + '/item/:id', async (req, res) => {
     log(req);
     const data = await query('SELECT * FROM items WHERE item_id=' + req.params.id);
+    if(data === undefined) return res.status(500).send();
     res.json(data[0]);
 })
 

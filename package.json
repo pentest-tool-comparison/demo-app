@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "reset database": "docker stop demo-app-db && docker rm demo-app-db && docker build -t demo-app-db ./mysql && docker run --name demo-app-db -p 3306:3306 -d demo-app-db",
+    "reset database": "docker stop demo-app-db & docker rm demo-app-db & docker build -t demo-app-db ./mysql & docker run --name demo-app-db -p 3306:3306 -d demo-app-db",
     "start": "node index.js"
   },
   "repository": {
